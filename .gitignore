@@ -10,10 +10,9 @@ frontend/yarn-error.log
 *.ntvs*
 *.njsproj
 *.sln
+.gitignore
+
 backend/backend/local_settings.py
 backend/backend/tools/
-backend/backend/db.sqlite3
-backend/backend/db.sqlite3_backup
-backend/backend/.req.txt
-
-
+backend/db.sqlite3
+backend/db.sqlite3_backup
