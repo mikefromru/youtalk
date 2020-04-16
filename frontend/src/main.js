@@ -7,7 +7,7 @@ import store from './store/index'
 import facebookLogin from 'facebook-login-vuejs'
 
 axios.defaults.baseURL = 'http://localhost:8000'
-// axios.defaults.baseURL = 'https://56edfe49.ngrok.io'
+//axios.defaults.baseURL = 'http://161.35.2.26'
 
 axios.interceptors.request.use(function (config) {
   const userToken = localStorage.getItem('user-token');

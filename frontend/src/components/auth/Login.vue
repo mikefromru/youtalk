@@ -21,11 +21,35 @@
 		              <v-toolbar-title><h1>English - Fighter</h1></v-toolbar-title>
 		            </v-row>
               </v-toolbar>
+              
               <v-card-text>
+              	<v-form @submit.prevent="login">
+              		<v-text-field autocomplete=false class="login-input" type='text' 
+                label='Эл.почта или имя пользователя' v-model="username"></v-text-field>
+                <v-text-field class="login-input" label='Пароль' type='password' v-model="password"></v-text-field>
+                <v-row align-center justify-center>
+                  <!-- <v-btn block large color='#3B56A5' class="white--text" type=submit>войти</v-btn> -->
+
+                  <!-- class="white--text" @click="loader = 'loading3'"> -->
+                <v-btn block large type=submit :loading="loading3" :disabled="loading3" color="#3B56A5" 
+                  class="white--text">
+                  войти
+                </v-btn>
+
+
+                </v-row>
+              	</v-form>
+              </v-card-text>
+
+
+<!--                <v-card-text>
            			<p class="text-center">Practice makes perfect</p> 
               </v-card-text>
 
-  	          <g-signin-button
+ -->
+
+
+<!--   	          <g-signin-button
 		            :params="googleSignInParams"
 		            @success="onGoogleSignInSuccess">
 	              <v-btn block large color='red' class="white--text" type=submit>Log in To Google</v-btn>
@@ -42,6 +66,7 @@
 						    </facebook-login>
 							</div>
 
+ --> 
             </v-card>
 
           </v-col>
@@ -63,7 +88,8 @@ export default {
         client_id: '472332632554-s5136eed04fuqlhs9gcis6ve99jdupp0.apps.googleusercontent.com'
       },
 			username: '',
-			password: ''
+			password: '',
+			loading3: false,
 		}
 	},
 	components: {
