@@ -14,10 +14,8 @@ class Profile(models.Model):
 	time_speak = models.IntegerField(default=0)
 	theme = models.BooleanField(default=False)
 	startbtn = models.BooleanField(default=False)
-	short_sound = models.BooleanField(default=False)
+	short_sound = models.BooleanField(default=True)
 	voice = models.BooleanField(default=True)
-
-
 
 	def __str__(self):
 		return str(self.user)

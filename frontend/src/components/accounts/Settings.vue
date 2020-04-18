@@ -2,6 +2,35 @@
 	<div>
 
     <!-- class="headline grey lighten-2" -->
+
+    <v-dialog v-model="dialog_change_password" width="500">
+    	<v-card>
+    		<v-card-title>Change Password</v-card-title>
+
+    		<v-card-text>
+    			<v-text-field label='New password' type="password" v-model="new_password1" required></v-text-field>
+    			<v-text-field label='Confirm password' type="password" v-model="new_password2" required></v-text-field>
+    			<div v-if="messageErrorPassword">
+    				<span v-for="x in messageErrorPassword" :key="x.id">
+    					<div v-if="typeof x === 'string'">{{ x }}</div>
+    					<div v-else-if="Array.isArray(x)">
+    						<ul>
+    							<li v-for="mes of x">{{ mes }}</li>
+    						</ul>
+    					</div>
+  						<div v-else>{{ x }}</div>
+    				</span>
+    			</div>
+    		</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+	        <v-btn outlined color="#AD1457" @click="change_password">Save</v-btn>
+          <v-btn color="" text @click="dialog_change_password = false">Cancel</v-btn>
+        </v-card-actions>
+    	</v-card>
+    </v-dialog>
+
 		<v-dialog v-model="dialog_q" width="500">
 			<v-card>
         <v-card-title
@@ -70,6 +99,10 @@
 		<br>
 		<br>
 
+    <v-alert class="messagePassword" v-model="messagePassword" type='success' dismissible>
+    	Your password was changed!
+    </v-alert>
+
 		<v-container>
 			<v-card flat color="transparent">
 			<v-row @click="dialog_q = true">
@@ -135,7 +168,9 @@
 					<vs-checkbox color="#AD1457" @change="change('voice')" v-model="voice"></vs-checkbox>
 				</v-col>
 			</v-row>
-			
+		<br>
+
+			<div id="ch" @click="dialog_change_password = true">Change password</div>
 
 			</v-card>
 		</v-container>	
@@ -146,6 +181,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import axios from 'axios'
 export default {
 	name: "Settings",
 	data() {
@@ -159,15 +195,34 @@ export default {
 			startbtn: null,
 			theme: null,
 			short_sound: null,
-			voice: null
+			voice: null,
+
+			new_password1: '',
+			new_password2: '',
+			messagePassword: false,
+			dialog_change_password: false,
+
+			messageErrorPassword: ''
 		}
 	},
 	computed: {
 		...mapGetters('accounts', ['profile']),
 	},
 	methods: {
-		changeTMP() {
-			console.log('hello world')
+		change_password() {
+			let data = {'new_password1': this.new_password1, 'new_password2': this.new_password2}	
+			axios.post("/rest-auth/password/change/", data)
+			.then(response => {
+				this.dialog_change_password = false
+				this.new_password1 = ''
+				this.new_password2 = ''
+				this.messageErrorPassword = ''
+				this.messagePassword = true
+			})
+			.catch(error => {
+				let result = error.response.request.response
+				this.messageErrorPassword = JSON.parse(result)
+			})
 		},
 		change(a, b) {
 			this.dialog_q = false
@@ -207,6 +262,9 @@ export default {
 </script>
 
 <style>
+#ch { 
+	cursor: pointer; 
+}
 .q-m {
 	padding-bottom: 10px;
 	color: red;

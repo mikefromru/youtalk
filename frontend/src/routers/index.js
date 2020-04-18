@@ -18,6 +18,9 @@ import RootFeedbacks from '../components/root/RootFeedbacks'
 
 // auth
 import Login from '../components/auth/Login'
+import Register from '../components/auth/Register'
+import ResetPassword from '../components/auth/ResetPassword'
+import ResetPasswordConfirm from '../components/auth/ResetPasswordConfirm'
 
 // youtalk
 import Levels from '../components/youtalk/Levels'
@@ -69,6 +72,9 @@ const routes = [
 
 	// { path: '/login/', component: Login, name: 'login', beforeEnter: ifNotAuthenticated },
 	{ path: '/login/', component: Login, name: 'login' },
+	{ path: '/register/', component: Register, name: 'register' },
+	{ path: '/reset-password/', component: ResetPassword, name: 'reset_password' },
+	{ path: '/reset-password-confirm/:token?/', component: ResetPasswordConfirm, name: 'reset_password_confirm' },
 
 
 	{ path: '/', component: Index, name: 'index' },

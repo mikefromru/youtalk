@@ -46,6 +46,27 @@ const actions = {
     })
   },
 
+
+  
+  REGISTRATION: ({commit, dispatch}, data) => {
+    return new Promise((resolve, reject) => {
+      axios.post('/rest-auth/registration/', data)
+      .then(response => {
+          const token = response.data.token
+          localStorage.setItem('user-token', token)
+          commit('AUTH_SUCCESS', token)
+          resolve(response)
+      })
+      .catch(error => {
+          commit('AUTH_ERROR', error.response.request.response)
+          state.auth_error = error.response.request.response
+          localStorage.clear()
+          localStorage.removeItem('vuex')
+          console.log(error, 'something went wrong')
+          reject(error)
+      })
+    })
+  },
 	
 	AUTH_REQUEST: ({commit, dispatch}, data) => {
 		return new Promise((resolve, reject) => {
@@ -64,6 +85,23 @@ const actions = {
 			})
 		})
 	},
+
+  REFRESH_TOKEN: ({commit, dispatch}, data) => {
+    axios.post('/rest-auth/refresh_token/', data)
+    .then(response => {
+      console.log('it is okay in REFRESH_TOKEN')
+      const token = response.data.token
+      localStorage.setItem('user-token', token)
+      commit('AUTH_SUCCESS', token)
+    })
+    .catch(error => {
+      console.log('something went wrong REFRESH_TOKEN')
+      localStorage.clear()
+      router.push({name: 'index'})
+      commit('LOGOUT')
+    })
+  },
+  
   LOGOUT: ({commit}) => {
     localStorage.clear()
     commit('LOGOUT')

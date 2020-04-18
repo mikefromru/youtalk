@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    {% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+    Для завершения регистрации пройдите по ссылке <a href="{{ activate_url }}">подтвердить email!</a>
+    {% endblocktrans %}{% endautoescape %}
+    {% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+    {{ site_domain }}{% endblocktrans %}<br>
+    Ссылка действительна в течение 24 часов.
+</body>
+</html>
+

@@ -6,7 +6,7 @@
 		</div>
 		
 		<div v-else>
-			<auth-login />
+			<youtalk-main />
 		</div>
 
 	</div>
@@ -15,13 +15,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import Levels from '../youtalk/Levels'
-import Login from '../auth/Login'
+import Main from '../youtalk/Main'
 
 	export default {
 		name: 'Index',
 		components: {
 			'youtalk-levels': Levels,
-			'auth-login': Login,
+			'youtalk-main': Main,
 		},
 
 		computed: {

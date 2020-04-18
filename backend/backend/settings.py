@@ -54,13 +54,19 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 
+    'rest_auth.registration',
+    'django_rest_passwordreset',
+
     'app',
     'feedback',
     'accounts',
     'root',
 ]
 
-SITE_ID = 3
+if DEBUG:
+    SITE_ID = 1
+else:
+    SITE_ID = 2
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -211,3 +217,20 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
     # 'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
+
+EMAIL_HOST = EMAIL_HOST
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_PORT = EMAIL_PORT
+EMAIL_USE_TLS = EMAIL_USE_TLS
+
+# ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+LOGIN_REDIRECT_URL = '/'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION =  'none' # 'mandatory'
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+
+# ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False

@@ -1,84 +1,81 @@
 <template>
-  <v-app id="">
-    <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          justify="center"
-          align="center"
-        >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
-            <v-card flat color="transparent"  class="ml-5 pb-5"> 
+<v-app light>
 
-	          	<v-toolbar flat color="transparent">
-            		<v-row justify="center">
-		              <v-toolbar-title><h1>English - Fighter</h1></v-toolbar-title>
-		            </v-row>
-              </v-toolbar>
-              
-              <v-card-text>
-              	<v-form @submit.prevent="login">
-              		<v-text-field autocomplete=false class="login-input" type='text' 
-                label='Эл.почта или имя пользователя' v-model="username"></v-text-field>
-                <v-text-field class="login-input" label='Пароль' type='password' v-model="password"></v-text-field>
-                <v-row align-center justify-center>
-                  <!-- <v-btn block large color='#3B56A5' class="white--text" type=submit>войти</v-btn> -->
-
-                  <!-- class="white--text" @click="loader = 'loading3'"> -->
-                <v-btn block large type=submit :loading="loading3" :disabled="loading3" color="#3B56A5" 
-                  class="white--text">
-                  войти
-                </v-btn>
+	<v-app-bar flat fixed>
+  	<v-row>
+			<v-icon class='pr-5' large @click="goHome()">keyboard_backspace</v-icon>
+			<v-toolbar-title><span>English - Fighter</span></v-toolbar-title>
+  	</v-row>
+	</v-app-bar>
 
 
-                </v-row>
-              	</v-form>
-              </v-card-text>
+  <v-container fluid fill-height>
+    <v-row align-center justify="center">
+      <v-flex xs12 sm8 md4>
+        <v-card flat color="transparent">
+          <v-alert class="ml-4" v-model="alert" outlined type="error" dismissible>
+            <span v-for="x in message" :key="x.id">
+              <div v-if="typeof x === 'string'">{{ x }}</div>
+              <div v-else-if="Array.isArray(x)">{{ x.join() }}</div>
+              <div v-else>{{ x }}</div>
+            </span>
+          </v-alert>
 
+          <v-row align-center justify="start">
+            <v-card-title class="ml-3">
+              <span class="logotextTMP">Sign in</span>
+            </v-card-title>
+            <!-- <img class="icon-logo" src="/static/images/logo/new-logo.jpeg" alt /> -->
+          </v-row>
 
-<!--                <v-card-text>
-           			<p class="text-center">Practice makes perfect</p> 
-              </v-card-text>
+          <v-card-text class="ml-3">
+            <v-form @submit.prevent="login">
+              <v-text-field
+                type="text"
+                label="E-mail or username"
+                v-model="username"
+                outlined
+                color="#757575"
+              ></v-text-field>
 
- -->
+              <v-text-field
+                class="login-input"
+                label="Password"
+                v-model="password"
+                outlined
+                color="#757575"
+		            :append-icon="show_pass ? 'mdi-eye' : 'mdi-eye-off'"
+		            :type="show_pass ? 'text' : 'password'"
+		            @click:append="show_pass = !show_pass"
+		            
+              ></v-text-field>
 
+                <v-btn
+                  height="60"
+                  large
+                  color="#E91E63"
+                  dark
+                  block
+                  type="submit"
+                >Sign in</v-btn>
 
-<!--   	          <g-signin-button
-		            :params="googleSignInParams"
-		            @success="onGoogleSignInSuccess">
-	              <v-btn block large color='red' class="white--text" type=submit>Log in To Google</v-btn>
-		          </g-signin-button>
+            </v-form>
 
-				      <div class="facebook">
-			          <facebook-login class="button"
-						      appId="1498914273473730"
-						      @login="onLogin"
-						      @get-initial-status="getUserData"
-						      @sdk-loaded="sdkLoaded"
-						      @logout="onLogout"
-						      >
-						    </facebook-login>
-							</div>
+						<v-row justify-center>
+              <router-link class="pr-3 mt-3 grey--text" :to="{name: 'reset_password'}">Forgot your password ?</router-link>
+            </v-row>
 
- --> 
-            </v-card>
-
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-row>
+  </v-container>
+</v-app>
 </template>
 
 
-
 <script>
+import { mapState } from 'vuex'
 import facebookLogin from 'facebook-login-vuejs';
 export default {
 	name: 'Login',
@@ -87,13 +84,17 @@ export default {
       googleSignInParams: {
         client_id: '472332632554-s5136eed04fuqlhs9gcis6ve99jdupp0.apps.googleusercontent.com'
       },
+      show_pass: false,
 			username: '',
 			password: '',
-			loading3: false,
+			message: '',
+			alert: false,
 		}
 	},
+	computed: {
+		 ...mapState('auth', ['auth_error'])
+	},
 	components: {
-		// 'facebook-login': facebookLogin
 		facebookLogin
 	},
 	methods: {
@@ -170,33 +171,36 @@ export default {
 
 		},
 
-
-
-		login() {
-			const { username, password } = this
-			this.$store.dispatch('auth/AUTH_REQUEST', { username, password })
-			.then(() => {
+    login() {
+      this.loader = 'loading3'
+      const {username, password} = this
+      this.$store.dispatch('auth/AUTH_REQUEST', {username, password})
+      .then(() => {
 				this.$store.dispatch('accounts/GET_SETTINGS')
 		    this.$store.dispatch('youtalk/GET_LEVELS')
 		    this.$store.dispatch('youtalk/GET_USERLEVELS')
 				this.$router.push({name: 'index'}).catch(err =>{})
-
-			})
-			.catch(error => {
-				console.log(error)
-			})
+      })
+      .catch(error => {
+      	console.log(error, '< error')
+        this.alert = true
+        this.message = JSON.parse(this.auth_error);
+      })
+    },
+  
+		goHome() {
+			this.$router.push({name: 'index'})
 		}
+
 	},
-	created() {
-		// this.connectToFacebook()
-	}
+                  
 };
 </script>
 
-<style>
-.spinner {
-	display: none !important;
-}
+<style scoped>
+.v-btn { font-size: 18px; }
+v-icon {cursor: pointer;}
+
 div.container.button {
 	margin-top: 7px !important;
 	padding: 0 !important;

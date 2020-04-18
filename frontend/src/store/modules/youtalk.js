@@ -38,7 +38,6 @@ const actions = {
 	GET_QUESTIONS: ({ commit }, payload) => {
 		axios.get('/app/questions/' + payload.slug + '/')
 		.then(response => {
-			console.log(payload, '<<< payload >>>')
 			function makeRandom(a, b) {
 				return Math.random() - 0.5
 			}

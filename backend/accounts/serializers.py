@@ -19,3 +19,5 @@ class ProfileSerializer(serializers.ModelSerializer):
 		model = Profile
 		fields = '__all__'
 
+class CustomTokenSerializer(serializers.Serializer):
+    token = serializers.CharField()

@@ -1,9 +1,6 @@
 <template>
 	<div>
-
 		<!-- <youtalk-header/> -->
-
-
 	  <div>
       <v-app-bar fixed dense flat color="">
 	      <v-toolbar-title><span id="title-name">English - Fighter</span></v-toolbar-title>
@@ -42,18 +39,10 @@
 								mdi-heart
 							</v-icon>
 
-
 							<router-link :to="{ name: 'start_level', params: {slug: x.slug, name: x.name } }">
 								<span class="name-levels" :class="{ 'name-black-levels': profile.theme }">{{ x.name }}</span>
 							</router-link>
 
-
-
-<!-- 							<v-icon @click="favorite(x)" color="#BBDEFB" right>
-								info
-							</v-icon>
-
- -->						
 					</v-chip>
 
 				</div>
@@ -83,9 +72,9 @@ import Header from '../commons/Header'
 		    root_items: { id: 5, title: 'Root', icon: '' }, 
 		    items: [
 		      { id: 0, title: 'Root', icon: '' },
-		      { id: 1, title: 'Settings', icon: 'settings' },
-		      { id: 2, title: 'Feedback', icon: 'question_answer' },
 		      { id: 3, title: 'Faforite', icon: 'mdi-heart' },
+		      { id: 2, title: 'Feedback', icon: 'question_answer' },
+		      { id: 1, title: 'Settings', icon: 'settings' },
 		      { id: 4, title: 'Log out', icon: 'exit_to_app' }, ],
 				}
 		},

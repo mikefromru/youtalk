@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode'
+import axios from 'axios'
 import { mapGetters } from 'vuex'
 import Levels from './components/youtalk/Levels'
 import Login from './components/auth/Login'
@@ -24,47 +26,64 @@ export default {
   methods: {
     get_data() {
       if (this.isAuthenticated) {
-        console.log('<<< ISAUTHENTICATED >>>')
         this.$store.dispatch('youtalk/GET_LEVELS')
         this.$store.dispatch('youtalk/GET_USERLEVELS')
         this.$store.dispatch('accounts/GET_SETTINGS')
         this.$vuetify.theme.dark = this.profile.theme
       }else{
-        console.log(this.isAuthenticated, '<<< UNKNOW >>>')
+        console.log()
       }
     }
   },
   created() {
     this.get_data()
+    axios.interceptors.response.use(response => {
+    const userToken = localStorage.getItem('user-token');
+    if (userToken) {
+
+      const decoded = jwt_decode(userToken)
+      const exp = decoded.exp
+      const orig_iat = decoded.orig_iat
+
+      if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - orig_iat < 628200) {
+        this.store.dispatch('auth/REFRESH_TOKEN', {'token': userToken} )//.then(() => {
+        if (this.profile.user) {
+          if (this.profile.user.is_superuser) {
+            alert('refresh token right now')
+          }
+        }
+      }else if (exp - (Date.now() / 1000) < 1800) {
+        console.log('do nothing, do not refresh')
+      }else{
+        console.log('I am alive')
+      }
+    }
+    return response
+    }, error => {
+      if (error.response.status === 401) {
+        this.store.dispatch('auth/LOGOUT').then(() => {
+          router.push({name: 'index'}).catch(err => {
+            console.log('status: 401')
+          });
+        });
+      }
+    return Promise.reject(error);
+    })
+
+
   },
 };
 </script>
 
 <style>
+html {
+  overflow-y: auto; 
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /*text-align: center;*/
   color: #2c3e50;
-  
 }
-
-/*h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}*/
 </style>

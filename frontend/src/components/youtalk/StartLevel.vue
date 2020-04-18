@@ -27,7 +27,8 @@
 					</div>
 				</v-card-text>
 				<v-card-actions>
-					<v-btn @click='goToLevel' id="start-btn" block dark large color="#C2185B">start</v-btn>
+					<!-- <v-btn @click='goToLevel' id="start-btn" block dark large color="#C2185B">start</v-btn> -->
+					<v-btn @click='goToLevel' id="start-btn" block dark large color="#E91E63">start</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-container>
