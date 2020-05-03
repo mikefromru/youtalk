@@ -98,37 +98,3 @@ module.exports = {
   },
   devtool: '#eval-source-map'
 }
-
-
-if (process.env.NODE_ENV === 'development') {
-  module.exports.devtool = '#source-map'
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"development"',
-        ENDPOINT: '"http://localhost:8000"'
-      }
-    })
-  ])
-}
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"',
-        ENDPOINT: '"161.35.2.26"',
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
-  ])
-}

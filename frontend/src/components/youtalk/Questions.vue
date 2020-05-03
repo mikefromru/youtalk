@@ -1,7 +1,7 @@
  <template>
 
  	<div>
-    <v-app-bar dense flat color="">
+    <v-app-bar fixed dense flat color="">
     	<v-row justify="space-between">
 				<v-icon large @click="goHome()">close</v-icon>
 				<div class="pt-1">{{ level_name }}</div>
@@ -9,6 +9,8 @@
     	</v-row>
     </v-app-bar>
 
+		<br>
+		<br>
 		<br>
 		
 		<!-- <v-btn @click.prevent="short_sound">sound</v-btn> -->
@@ -124,6 +126,7 @@ export default {
     	this.pauseValue = !this.pauseValue
     },
 		play() {
+
 			this.timeValue = this.profile.seconds
 			this.voice()
 			this.progress_persent = 0
@@ -144,8 +147,13 @@ export default {
 				// this.stop_timer()
 				this.showStartBtn = true
 				this.showAfterStartBtn = false
+	    	this.anime = true
 			}else{
-				this.start_timer()
+				var self = this
+				setTimeout(function() {
+		    	self.anime = true
+					self.start_timer()
+				}, 4000)
 			}
 
 			this.i += 1
@@ -158,9 +166,7 @@ export default {
 				this.$store.dispatch('accounts/CHANGE_SETTINGS', { data } )
 				this.$router.push({name: 'finish'})
 			}else{
-	    	this.anime = true
 				this.progress_persent = 100
-				// this.stop_timer()
 				this.numberOFquestion += 1
 				this.timeValue = this.profile.seconds
 				this.voice()
@@ -175,8 +181,6 @@ export default {
 		voice() {
 			if (this.profile.voice) {
 				responsiveVoice.speak(this.question, "US English Male", {rate: 0.8})
-			// }else{
-				// console.log()
 			}
 		},
 		short_sound() {
@@ -190,24 +194,26 @@ export default {
 			this.start_timer()
     	this.showStartBtn = false
     	this.showAfterStartBtn = true
-    }
-		
+    },
+
 	},
 	mounted() {
-		this.anime = true
-		this.timeValue = this.profile.seconds
 		this.voice()
+		this.timeValue = this.profile.seconds
 		if (this.profile.startbtn === true) {
 			this.showStartBtn = true
+			this.anime = true
 		}else{
-			this.start_timer()
+			var self = this
+			setTimeout(function() {
+				self.anime = true
+				self.start_timer()
+			}, 4000)
 		}
+
 	},
 	destroyed() {
 		this.stop_timer()
-	},
-	created() {
-		// this.voice()
 	},
 	watch: {
 		pauseValue() {

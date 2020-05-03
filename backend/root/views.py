@@ -28,13 +28,11 @@ class ProfileModel(ModelViewSet):
 	queryset = Profile.objects.all()
 	serializer_class = ProfileSerializer 
 
-
 class FeedbackModel(ModelViewSet):
 
 	permission_classes = [IsAdminUser]
 	queryset = Feedback.objects.all()
 	serializer_class = FeedbackSerializer
-
 
 class LevelsModel(ModelViewSet):
 
@@ -49,9 +47,19 @@ class LevelQuestionModel(ModelViewSet):
 		serializer = QuestionSerializer(questions, many=True)
 		return Response(serializer.data)
 
-
 class QuestionsModel(ModelViewSet):
 
 	permission_classes = [IsAdminUser]
 	queryset = Question.objects.all()
 	serializer_class = QuestionSerializer
+
+from rest_framework.decorators import api_view
+
+@api_view(['POST'])
+def add_question(request):
+	if request.method == 'POST':
+		id = request.data.get('id')
+		question = request.data.get('name')
+		Question.objects.create(level_id=id, name=question)
+		return Response({'data': request.data})
+	return Response({'message': 'Not allow'})

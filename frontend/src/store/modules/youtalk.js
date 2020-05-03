@@ -41,8 +41,10 @@ const actions = {
 			function makeRandom(a, b) {
 				return Math.random() - 0.5
 			}
-			let q = response.data.sort(makeRandom).filter(i => i.name.length < 60)
-			commit('QUESTIONS', q.slice(0, payload.q))
+		// let q = response.data.sort(makeRandom).filter(i => i.name.length < 60)
+		let q = response.data.sort(makeRandom).filter(i => i.forbidden != false)
+		// let q = response.data.sort(makeRandom)
+		commit('QUESTIONS', q.slice(0, payload.q))
 		})
 		.catch(error => {
 			console.log(error)

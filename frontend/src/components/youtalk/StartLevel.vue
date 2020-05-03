@@ -4,7 +4,10 @@
 		<v-app-bar flat fixed>
 		<transition name='fade'>
 	  	<v-row v-if="show">
-				<v-icon class='pr-5' large @click="goHome()">keyboard_backspace</v-icon>
+	  		<a @click="$router.go(-1)">
+					<v-icon class='pr-5' large>keyboard_backspace</v-icon>
+				</a>
+				<!-- <v-icon class='pr-5' large @click="goHome()">keyboard_backspace</v-icon> -->
 
 				<v-toolbar-title><span :style="{fontSize: level_name.length > 25 ? '10pt': '12pt'}">{{ level_name }}</span></v-toolbar-title>
 

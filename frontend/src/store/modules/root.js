@@ -28,7 +28,7 @@ const mutations = {
 	CHANGE: (state, data) => {
 		let item = state.questions.find(x => x.id == data.id)
 		item.name = data.name
-		// item.forbidden = data.forbidden
+		item.forbidden = data.forbidden
 	}
 }
 

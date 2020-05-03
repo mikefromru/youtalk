@@ -6,6 +6,7 @@ from . views import (
 	QuestionsModel,
 	ProfileModel,
 	FeedbackModel,
+	add_question,
 )
 
 router = routers.DefaultRouter()
@@ -15,5 +16,9 @@ router.register('questions', QuestionsModel, basename='root_questions')
 router.register('feedbacks', FeedbackModel, basename='root_feedbacks')
 router.register('profile', ProfileModel, basename='root_profile')
 
-urlpatterns = router.urls
+urlpatterns = [
+	path('add-question/', add_question, name='add_question')
+]
+
+urlpatterns += router.urls
 
